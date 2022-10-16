@@ -1,31 +1,31 @@
 @echo off
 setlocal enabledelayedexpansion
-
 ::-----------------------------SETUP--------------------------------------
 
-set "iwad=Doom2.WAD"
-set "pwad[0]=btsx_e2a.wad"
-set "pwad[1]=btsx_e2b.wad"
+set "iwad=Doom2.wad"
+set "pwad[0]=arrival.wad"
+set "pwad[1]="
 set "pwad[2]="
 
-set "deh=btsx_e2.deh"
+set "deh="
 
 ::complevel  2 : Doom 2 | 3 : Ultimate Doom | 4 : Final Doom | 9 : Boom | 11 : MBF | 21 : MBF21
 set "complevel=2"
 
-set "action=play" # Play / Record / PlayDemo
+set "action=play" # Play / Record / PlayDemo / VidDump / Warp
 
 set "additionalParameters="
 
-::------------- PlayDemo / Record ONLY
-set "name=demo" #Demo name (record)
-set playdemopath="C:\Users\rinam\OneDrive\Bureau\tv01-050.lmp" #(play demo)
+:: PlayDemo / Record ONLY
+set "name=MyFirstDemo" #Demo name (Record)
+set playdemopath="C:\Users\MyDemo.lmp" #(play demo)
 set "skill=4"
-set "warp=1"
+set "warp=3"
 
 ::-----------------------------FILES PATH-------------------------------------
 
-set "sourceport=C:\Users\%USERNAME%\OneDrive\Documents\Doom\Source port\PrBoom+\" # Source port folder
+set "sourceport=C:\Users\%USERNAME%\OneDrive\Documents\Doom\Source port\DSDA Doom\" # Source port folder
+set "executable=dsda-doom.exe"
 set "iwadspath=C:\Users\%USERNAME%\OneDrive\Documents\Doom\WAD\" # Doom.wad / Doom2.wad folder
 set "wadspath=C:\Users\%USERNAME%\OneDrive\Documents\Doom\WAD\wads\" # Wads path
 
@@ -67,16 +67,23 @@ EXIT /B
 
 :CASE_play
   @echo on
-  prboom-plus.exe -iwad %iwad% -file %files% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% -file %files% -complevel %complevel% %additionalParameters%
+  GOTO END_CASE
+:CASE_warp
+  @echo on
+  Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_record
   @echo on
-  prboom-plus.exe -iwad %iwad% -skill %skill% -warp %warp% -file %files% -longtics -record %record% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -longtics -record %record% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_playdemo
   @echo on
-  prboom-plus.exe -iwad %iwad% -file %files% -playdemo %playdemopath% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% -file %files% -playdemo %playdemopath% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
+:CASE_viddump
+  @echo on
+  Start %executable% -iwad %iwad% -file %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
 :DEFAULT_CASE
   Unknown action "%action%"
   GOTO END_CASE
