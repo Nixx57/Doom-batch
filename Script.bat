@@ -3,24 +3,27 @@ setlocal enabledelayedexpansion
 ::-----------------------------SETUP--------------------------------------
 
 set "iwad=Doom2.wad"
-set "pwad[0]=arrival.wad"
-set "pwad[1]="
+set "pwad[0]=KDiKDi_A.wad"
+set "pwad[1]=KDiKDi_B.wad"
 set "pwad[2]="
 
-set "deh="
+set "deh=kdikdizd.deh"
+
+:: Play / Record / PlayDemo / Warp / VidDump
+set "action=play" 
 
 ::complevel  2 : Doom 2 | 3 : Ultimate Doom | 4 : Final Doom | 9 : Boom | 11 : MBF | 21 : MBF21
 set "complevel=2"
 
-set "action=play" # Play / Record / PlayDemo / VidDump / Warp
-
 set "additionalParameters="
 
-:: PlayDemo / Record ONLY
-set "name=MyFirstDemo" #Demo name (Record)
-set playdemopath="C:\Users\MyDemo.lmp" #(play demo)
+:: PlayDemo / Record params
+set "nameRecord=demoName" #Demo name (Record)
+set playdemopath="C:\Users\%USERNAME%\OneDrive\Bureau\doom-max-movie-2295069.lmp" #(Play Demo)
+
+:: Warp / Record params
 set "skill=4"
-set "warp=3"
+set "warp=13"
 
 ::-----------------------------FILES PATH-------------------------------------
 
@@ -49,9 +52,9 @@ if defined deh  (
   call echo DEH = %deh%
 )
 
-set path=.\%name%\
+set path=.\%nameRecord%\
 if not exist "%path%" (mkdir "%path%")
-set record=%path%%name%
+set record=%path%%nameRecord%
 
 FOR /F "delims=|" %%A IN ("%iwad%") DO (
     SET SOMEFILE=%%~nxA
@@ -59,6 +62,8 @@ FOR /F "delims=|" %%A IN ("%iwad%") DO (
 ECHO IWAD = %SOMEFILE%
 
 ::-----------------------
+pause
+
 CALL :CASE_%action%
 IF ERRORLEVEL 1 CALL :DEFAULT_CASE
 
@@ -75,11 +80,11 @@ EXIT /B
   GOTO END_CASE
 :CASE_record
   @echo on
-  Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -longtics -record %record% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_playdemo
   @echo on
-  Start %executable% -iwad %iwad% -file %files% -playdemo %playdemopath% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% -file %files% -playdemo %playdemopath% %additionalParameters%
   GOTO END_CASE
 :CASE_viddump
   @echo on
