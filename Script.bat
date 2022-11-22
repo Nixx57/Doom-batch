@@ -1,4 +1,4 @@
-@echo off
+@ECHO off
 setlocal enabledelayedexpansion
 ::-----------------------------SETUP--------------------------------------
 
@@ -39,30 +39,29 @@ set iwad=%iwadspath%%iwad%
 set "files="
 set /A i = 0
 
+FOR /F "delims=|" %%A IN ("%iwad%") DO (
+    SET SOMEFILE=%%~nxA
+)
+ECHO IWAD = %SOMEFILE%
+
 :my_loop 
     if defined pwad[%i%]  (
         set files=%files%%wadspath%!pwad[%i%]! 
-        call echo PWAD = %%pwad[%i%]%%
+        call ECHO PWAD = %%pwad[%i%]%%
         set /a i = %i% + 1
         goto :my_loop
     )
 
 if defined deh  (
   set files=%files%-deh %wadspath%%deh%
-  call echo DEH = %deh%
+  call ECHO DEH = %deh%
 )
 
 set path=.\%nameRecord%\
 if not exist "%path%" (mkdir "%path%")
 set record=%path%%nameRecord%
 
-FOR /F "delims=|" %%A IN ("%iwad%") DO (
-    SET SOMEFILE=%%~nxA
-)
-ECHO IWAD = %SOMEFILE%
-
-::-----------------------
-pause
+::------------------------------------------------------------------------
 
 CALL :CASE_%action%
 IF ERRORLEVEL 1 CALL :DEFAULT_CASE
@@ -71,27 +70,32 @@ ECHO Done.
 EXIT /B
 
 :CASE_play
-  @echo on
+  ECHO Parameters : -complevel %complevel% %additionalParameters%
+  pause
   Start %executable% -iwad %iwad% -file %files% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_warp
-  @echo on
+  ECHO Parameters : -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
+  pause
   Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_record
-  @echo on
+  ECHO Parameters : -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
+  pause
   Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_playdemo
-  @echo on
+  ECHO Parameters : -playdemo %playdemopath% %additionalParameters%
+  pause
   Start %executable% -iwad %iwad% -file %files% -playdemo %playdemopath% %additionalParameters%
   GOTO END_CASE
 :CASE_viddump
-  @echo on
+  ECHO Parameters : -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
+  pause
   Start %executable% -iwad %iwad% -file %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
 :DEFAULT_CASE
   Unknown action "%action%"
   GOTO END_CASE
 :END_CASE
 
-if ERRORLEVEL 1 echo Error
+if ERRORLEVEL 1 ECHO Error
