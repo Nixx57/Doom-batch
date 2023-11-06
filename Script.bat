@@ -61,6 +61,9 @@ set path=.\%nameRecord%\
 if not exist "%path%" (mkdir "%path%")
 set record=%path%%nameRecord%
 
+if defined files (
+  set "%files%=-file %files%"
+)
 ::------------------------------------------------------------------------
 
 CALL :CASE_%action%
@@ -72,27 +75,27 @@ EXIT /B
 :CASE_play
   ECHO Parameters : -complevel %complevel% %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% -file %files% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_warp
   ECHO Parameters : -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_record
   ECHO Parameters : -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% -file %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_playdemo
   ECHO Parameters : -playdemo %playdemopath% %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% -file %files% -playdemo %playdemopath% %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -playdemo %playdemopath% %additionalParameters%
   GOTO END_CASE
 :CASE_viddump
   ECHO Parameters : -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% -file %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
 :DEFAULT_CASE
   Unknown action "%action%"
   GOTO END_CASE
