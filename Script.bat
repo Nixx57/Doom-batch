@@ -64,6 +64,10 @@ set record=%path%%nameRecord%
 if defined files (
   set files=-file %files%
 )
+
+if defined complevel (
+    set complevel=-complevel %complevel%
+)
 ::------------------------------------------------------------------------
 
 CALL :CASE_%action%
@@ -73,25 +77,25 @@ ECHO Done.
 EXIT /B
 
 :CASE_play
-  ECHO Parameters : -complevel %complevel% %additionalParameters%
+  ECHO Parameters : %complevel% %additionalParameters%
   ECHO --------------------
-  ECHO %executable% -iwad %iwad% %files% -complevel %complevel% %additionalParameters%
+  ECHO %executable% -iwad %iwad% %files% %complevel% %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% %files% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% %files% %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_warp
-  ECHO Parameters : -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
+  ECHO Parameters : -skill %skill% -warp %warp% %complevel% %additionalParameters%
   ECHO --------------------
-  ECHO %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
+  ECHO %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% %complevel% %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_record
-  ECHO Parameters : -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
+  ECHO Parameters : -skill %skill% -warp %warp% -record %record% %complevel% %additionalParameters%
   ECHO --------------------
-  ECHO %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
+  ECHO %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -record %record% %complevel% %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -record %record% %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_playdemo
   ECHO Parameters : -playdemo %playdemopath% %additionalParameters%
@@ -101,11 +105,11 @@ EXIT /B
   Start %executable% -iwad %iwad% %files% -playdemo %playdemopath% %additionalParameters%
   GOTO END_CASE
 :CASE_viddump
-  ECHO Parameters : -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
+  ECHO Parameters : -timedemo %playdemopath% -warp %warp% %complevel% -viddump %name%.mp4 %additionalParameters%
   ECHO --------------------
-  ECHO %executable% -iwad %iwad% %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
+  ECHO %executable% -iwad %iwad% %files% -timedemo %playdemopath% -warp %warp% %complevel% -viddump %name%.mp4 %additionalParameters%
   pause
-  Start %executable% -iwad %iwad% %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
+  Start %executable% -iwad %iwad% %files% -timedemo %playdemopath% -warp %warp% %complevel% -viddump %name%.mp4 %additionalParameters%
 :DEFAULT_CASE
   Unknown action "%action%"
   GOTO END_CASE
