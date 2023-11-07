@@ -62,7 +62,7 @@ if not exist "%path%" (mkdir "%path%")
 set record=%path%%nameRecord%
 
 if defined files (
-  set "%files%=-file %files%"
+  set files=-file %files%
 )
 ::------------------------------------------------------------------------
 
@@ -74,26 +74,36 @@ EXIT /B
 
 :CASE_play
   ECHO Parameters : -complevel %complevel% %additionalParameters%
+  ECHO --------------------
+  ECHO %executable% -iwad %iwad% %files% -complevel %complevel% %additionalParameters%
   pause
   Start %executable% -iwad %iwad% %files% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_warp
   ECHO Parameters : -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
+  ECHO --------------------
+  ECHO %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
   pause
   Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_record
   ECHO Parameters : -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
+  ECHO --------------------
+  ECHO %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
   pause
   Start %executable% -iwad %iwad% %files% -skill %skill% -warp %warp% -record %record% -complevel %complevel% %additionalParameters%
   GOTO END_CASE
 :CASE_playdemo
   ECHO Parameters : -playdemo %playdemopath% %additionalParameters%
+  ECHO --------------------
+  ECHO %executable% -iwad %iwad% %files% -playdemo %playdemopath% %additionalParameters%
   pause
   Start %executable% -iwad %iwad% %files% -playdemo %playdemopath% %additionalParameters%
   GOTO END_CASE
 :CASE_viddump
   ECHO Parameters : -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
+  ECHO --------------------
+  ECHO %executable% -iwad %iwad% %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
   pause
   Start %executable% -iwad %iwad% %files% -timedemo %playdemopath% -warp %warp% -complevel %complevel% -viddump %name%.mp4 %additionalParameters%
 :DEFAULT_CASE
