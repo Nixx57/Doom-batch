@@ -2,15 +2,15 @@
 setlocal enabledelayedexpansion
 ::-----------------------------SETUP--------------------------------------
 
-set "iwad=Doom2.wad"
-set "pwad[0]=KDiKDi_A.wad"
-set "pwad[1]=KDiKDi_B.wad"
+set "iwad=doom2.wad"
+set "pwad[0]=hr2final.wad"
+set "pwad[1]="
 set "pwad[2]="
 
-set "deh=kdikdizd.deh"
+set "deh="
 
 :: Play / Record / PlayDemo / Warp / VidDump
-set "action=play" 
+set "action=warp" 
 
 ::complevel  2 : Doom 2 | 3 : Ultimate Doom | 4 : Final Doom | 9 : Boom | 11 : MBF | 21 : MBF21
 set "complevel=2"
@@ -18,24 +18,24 @@ set "complevel=2"
 set "additionalParameters="
 
 :: PlayDemo / Record params
-set "nameRecord=demoName" #Demo name (Record)
-set playdemopath="C:\Users\%USERNAME%\OneDrive\Bureau\doom-max-movie-2295069.lmp" #(Play Demo)
+set "nameRecord=demo" #Demo name (Record)
+set playdemopath="" #(Play Demo)
 
 :: Warp / Record params
 set "skill=4"
-set "warp=13"
+set "warp=32"
 
 ::-----------------------------FILES PATH-------------------------------------
 
-set "sourceport=C:\Users\%USERNAME%\OneDrive\Documents\Doom\Source port\DSDA Doom\" # Source port folder
+set "sourceport=C:\Users\Tonton Panzer\Desktop\RetroFPS\DOOM\BOOM\DSDADOOM okversion\" # Source port folder
 set "executable=dsda-doom.exe"
-set "iwadspath=C:\Users\%USERNAME%\OneDrive\Documents\Doom\WAD\" # Doom.wad / Doom2.wad folder
-set "wadspath=C:\Users\%USERNAME%\OneDrive\Documents\Doom\WAD\wads\" # Wads path
+set "iwadspath=C:\Users\Tonton Panzer\Desktop\RetroFPS\DOOM\BOOM\DSDADOOM okversion\" # Doom.wad / Doom2.wad folder
+set "wadspath=C:\Users\Tonton Panzer\Desktop\RetroFPS\DOOM\BOOM\DSDADOOM okversion\" # Wads path
 
 ::-----------------------------SCRIPT : DO NOT MODIFY---------------------
-cd %sourceport%
+cd "%sourceport%"
 
-set iwad=%iwadspath%%iwad%
+set iwad="%iwadspath%%iwad%"
 set "files="
 set /A i = 0
 
@@ -46,23 +46,31 @@ ECHO IWAD = %SOMEFILE%
 
 :my_loop 
     if defined pwad[%i%]  (
-        set files=%files%%wadspath%!pwad[%i%]! 
+        if defined files (
+            set files=%files% "%wadspath%!pwad[%i%]!"
+        ) else (
+            set files="%wadspath%!pwad[%i%]!"
+        )
         call ECHO PWAD = %%pwad[%i%]%%
         set /a i = %i% + 1
         goto :my_loop
     )
 
 if defined deh  (
-  set files=%files%-deh %wadspath%%deh%
-  call ECHO DEH = %deh%
+    if defined files (
+        set files=%files% -deh "%wadspath%%deh%"
+    ) else (
+        set files=-deh "%wadspath%%deh%"
+    )
+    call ECHO DEH = %deh%
 )
 
 set path=.\%nameRecord%\
 if not exist "%path%" (mkdir "%path%")
-set record=%path%%nameRecord%
+set record="%path%%nameRecord%"
 
 if defined files (
-  set files=-file %files%
+    set files=-file %files%
 )
 
 if defined complevel (
